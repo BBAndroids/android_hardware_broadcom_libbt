@@ -140,10 +140,10 @@ static int is_rfkill_disabled(void)
     UPIODBG("is_rfkill_disabled ? [%s]", value);
 
     if (strcmp(value, "1") == 0) {
-        return UPIO_BT_POWER_ON;
+        return 1;
     }
 
-    return UPIO_BT_POWER_OFF;
+    return 0;
 }
 
 static int init_rfkill()
