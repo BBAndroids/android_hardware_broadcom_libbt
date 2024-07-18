@@ -914,6 +914,8 @@ void hw_config_cback(void *p_mem)
                 ALOGI("Setting fw settlement delay to %d ", delay);
                 ms_delay(delay);
 
+                bt_vendor_cbacks->fwldd_cb(BT_VND_OP_RESULT_SUCCESS);
+
                 p_buf->len = HCI_CMD_PREAMBLE_SIZE;
                 UINT16_TO_STREAM(p, HCI_RESET);
                 *p = 0; /* parameter length */
