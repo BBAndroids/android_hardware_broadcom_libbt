@@ -91,6 +91,8 @@ typedef struct
 static vnd_lpm_proc_cb_t lpm_proc_cb;
 #endif
 
+void ms_delay (uint32_t timeout);
+
 /******************************************************************************
 **  Static variables
 ******************************************************************************/
@@ -349,6 +351,8 @@ int upio_set_bluetooth_power(int on)
 
     if (fd >= 0)
         close(fd);
+
+    ms_delay(500);
 
     return ret;
 }
