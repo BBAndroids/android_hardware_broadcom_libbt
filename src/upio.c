@@ -214,14 +214,17 @@ static void proc_btwrite_timeout(union sigval arg)
 void upio_start_stop_timer(int action) {
     struct itimerspec ts;
 
+    if (lpm_proc_cb.timer_created == FALSE) {
+        ALOGE("%s: called before timer was created!", __FUNCTION__);
+    	return;
+    }
+
     if (action == UPIO_ASSERT) {
         lpm_proc_cb.btwrite_active = TRUE;
-        if (lpm_proc_cb.timer_created == TRUE) {
-            ts.it_value.tv_sec = PROC_BTWRITE_TIMER_TIMEOUT_MS/1000;
-            ts.it_value.tv_nsec = 1000000*(PROC_BTWRITE_TIMER_TIMEOUT_MS%1000);
-            ts.it_interval.tv_sec = 0;
-            ts.it_interval.tv_nsec = 0;
-        }
+        ts.it_value.tv_sec = PROC_BTWRITE_TIMER_TIMEOUT_MS/1000;
+        ts.it_value.tv_nsec = 1000000*(PROC_BTWRITE_TIMER_TIMEOUT_MS%1000);
+        ts.it_interval.tv_sec = 0;
+        ts.it_interval.tv_nsec = 0;
     } else {
         /* unarm timer if writing 0 to lpm; reduce unnecessary user space wakeup */
         memset(&ts, 0, sizeof(ts));
